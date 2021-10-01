@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Kiosk Apk 다운로드</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+
+    <!-- jquery -->
+    <script src="/assets/lib/js/jquery-3.6.0.min.js"></script>
+
+    <!-- UI Componant -->
+    <link rel="stylesheet" href="/assets/lib/css/tailwind.css">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.ajax({
+               method: 'GET',
+               url: '/log/latest',
+               contentType: 'application/json',
+               error: function (error){
+                   console.log(JSON.stringify(error));
+               },
+               success: function(data){
+                   let loglist = data.result.logList;
+                   let sources = "";
+
+                   $.each(loglist, function(index,el){
+                       let name = el.name;
+                       let num = el.no;
+
+                       sources += "<div class='flex bg-white shadow-md rounded-2xl p-1 m-1 px-3 py-3'>";
+                       sources += "    <img src='/assets/img/ic_main_foreground.png' alt='The gangnam logo' class=' w-16  object-cover  h-16 rounded-2xl'>";
+                       sources += "    <div class='flex flex-col justify-center w-full px-2 py-1'>";
+                       sources += "        <div class='flex justify-between items-center'>";
+                       sources += "            <div class='flex flex-col w-4/5'>";
+                       sources += "                <h2 class='text-sm font-bold'>" + name + "</h2>";
+                       sources += "            </div>";
+                       sources += "            <div class='justify-center items-center'>";
+                       sources += "                 <button" + " onclick =" + "\"" + "javascript : apkdown(" + "'" + num + "-update" + "'" + ")"+ "\"" + "class='flex-none bg-blue-500 hover:bg-blue-600 text-white text-bold rounded-2xl w-24 h-8 px-1 transition-colors'>"+"Download</button>";
+                       sources += "            </div>";
+                       sources += "        </div>";
+                       sources += "    </div>";
+                       sources += "</div>";
+                   });
+
+                   sources += "<div class='flex bg-white shadow-md rounded-2xl p-1 m-1 px-3 py-3 '>";
+                   sources += "     <img src='/assets/img/google.jpg' alt='Just a flower' class=' w-16  object-cover  h-16 rounded-2xl'>";
+                   sources += "     <div class='flex flex-col justify-center w-full px-2 py-1'>";
+                   sources += "         <div class='flex justify-between items-center'>";
+                   sources += "             <div class='flex flex-col w-4/5'>";
+                   sources += "                 <h2 class='text-sm font-bold'>Google 키보드</h2>";
+                   sources += "             </div>";
+                   sources += "             <div class='justify-center items-center'>";
+                   sources += "                 <button" + " onclick =" + " \"location.href = 'https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin'\"" + " id='google-keyboard' class='flex-none bg-blue-500 hover:bg-blue-600 text-white text-bold rounded-2xl w-24 h-8 px-1 transition-colors'>Download</button>";
+                   sources += "             </div>";
+                   sources += "         </div>";
+                   sources += "     </div>";
+                   sources += "</div>";
+
+                   $("#download").html(sources);
+               }
+            });
+
+            $('#google-keyboard').click(function () {
+                location.href = 'https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin';
+            });
+
+        });
+
+        function apkdown(ver) {
+            location.href = "/assets/apk/kiosk-" + ver + ".apk";
+            console.log("download success");
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <nav class="bg-gray-800 sticky top-0">
+        <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="relative flex items-center justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div onclick="location.href = 'monitoring.html'" class="flex-shrink-0 flex items-center">
+                        <img class="block lg:hidden h-8 w-auto" src="/assets/img/ic_main_foreground.png" alt="Workflow">
+                        <img class="hidden lg:block h-8 w-auto" src="/assets/img/ic_main_foreground.png" alt="Workflow">
+                    </div>
+                    <div class="hidden sm:block sm:ml-6">
+                        <div class="flex space-x-4">
+                            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                            <a href="monitoring.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Monitoring</a>
+
+                            <a href="#"
+                               class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Apk Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden sticky" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                <a href="monitoring.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Monitoring</a>
+
+                <a href="#"
+                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Apk Download</a>
+            </div>
+        </div>
+        <!-- header -->
+        <div class="bg-white shadow">
+            <div class="max-w-full mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                    Apk Download
+                </h1>
+            </div>
+        </div>
+    </nav>
+    <!-- download List -->
+    <div>
+        <div id="download" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        </div>
+    </div>
+</body>
+</html>
